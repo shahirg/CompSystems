@@ -1,12 +1,9 @@
-#script to count total file lines in current directory
-
+#script to count number of total lines within a given number of files
 total_lines=0;
-
 for FILE in "$@"
 do
-	x=$(wc -l < $FILE);
-	echo "$FILE $x lines";
+	x=$(wc -l <$FILE);
 	total_lines=`expr $total_lines + $x`;
-	echo "Current Total = $total_lines\n";       	
+	echo "$FILE $x lines\nCurrent Total = $total_lines\n";       	
 done
 echo "Total lines = $total_lines";
