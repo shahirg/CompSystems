@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <errno.h>
+#include <fcntl.h>
 
 int main(int argc, char* argv[]){
 	//printf("%d\n",argc);
@@ -10,10 +11,10 @@ int main(int argc, char* argv[]){
 		perror("Not enough input args");
 		exit(1);
 	}
-
+	int numInputs = argc>=3 ? argc-1:argc;
 
 	//check if input files exits aand are readable
-	for(int i=1; i< (argc>=3 ? argc-1:argc) ; i++){
+	for(int i=1; i< numInputs ; i++){
 		printf("%s\n",argv[i]);
 		//open the file
 		if (access(argv[i], R_OK)){
@@ -22,20 +23,24 @@ int main(int argc, char* argv[]){
 		}
 	}
 
-	char *outputFile = argc>3 ? argv[argc-1]:"myfile.out";
-	printf("%s\n",outputFile);
+	//get output file name
+	const char *outputFile = argc>3 ? argv[argc-1]:"myfile.out";
 
-	// copy files one at time into new file
+	//set up file descriptors
+	int fd[numInputs+1];
 
-	// int fd[2];
-	// char buf[24];
-	// int n=0;
-	// while((n=read(STDIN_FILENO, buf, sizeof(buf))) != 0) {
-    // 	write(STDOUT_FILENO, buf, n);
-  	// }
-	
-	printf("hi");
-	printf("hi");
+	//All input fd set to read only
+	for(int i =0; i < numInputs-1; i++){
+		fd[i] = open(argv[i+1], O_RDONLY);
+		if(fd[i] == -1){
+			printf("Failed to open %s", argv[i+1]);
+			exit(1);
+		}
+	}
+
+	//output fd set to write only
+	fd[numInputs-1] = open(outputFile, O_WRONLY | O_CREAT | O_APPEND);
+
 	return 0;
 }
 
