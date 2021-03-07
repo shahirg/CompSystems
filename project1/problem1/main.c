@@ -3,6 +3,7 @@
 #include <unistd.h>
 #include <errno.h>
 #include <fcntl.h>
+#include <string.h>
 
 int main(int argc, char* argv[]){
 	//printf("%d\n",argc);
@@ -42,15 +43,15 @@ int main(int argc, char* argv[]){
 	fd[numInputs-1] = open(outputFile, O_WRONLY | O_CREAT | O_APPEND, 0666);
 
 	//create buffer and copy files into the buffer
-	char buf[1024];
+	char buf[128];
 	
 	int nread;
 	for(int i=0; i < numInputs-1; i++){
 		nread = 0;
 		while((nread = read(fd[i], buf, sizeof(buf)) != 0)){
-			buf[nread] = '\0';
+
 			printf("read: '%s'\n", buf);
-			write(fd[numInputs-1], buf, sizeof(buf));
+			write(fd[numInputs-1], buf, sizeof(char)*(strlen(buf)));
 		}
 		close(fd[i]);
 	}
