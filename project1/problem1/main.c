@@ -27,7 +27,7 @@ int main(int argc, char* argv[]){
 	const char *outputFile = argc>3 ? argv[argc-1]:"myfile.out";
 
 	//set up file descriptors
-	int fd[numInputs+1];
+	int fd[numInputs];
 
 	//All input fd set to read only
 	for(int i =0; i < numInputs-1; i++){
@@ -39,16 +39,29 @@ int main(int argc, char* argv[]){
 	}
 
 	//output fd set to write only
-	fd[numInputs-1] = open(outputFile, O_WRONLY | O_CREAT | O_APPEND);
+	fd[numInputs-1] = open(outputFile, O_WRONLY | O_CREAT | O_APPEND, 0666);
 
+	//create buffer and copy files into the buffer
+	char buf[1024];
+	
+	int nread;
+	for(int i=0; i < numInputs-1; i++){
+		nread = 0;
+		while((nread = read(fd[i], buf, sizeof(buf)) != 0)){
+			buf[nread] = '\0';
+			printf("read: '%s'\n", buf);
+			write(fd[numInputs-1], buf, sizeof(buf));
+		}
+		close(fd[i]);
+	}
 	return 0;
 }
 
 
-// void WriteInFile (int fd, const char *buff, int len){
+void WriteInFile (int fd, const char *buff, int len){
 	
-// }
+}
 
-// void CopyFile (int fd, const char *file_in){
+void CopyFile (int fd, const char *file_in){
 	
-// }
+}
