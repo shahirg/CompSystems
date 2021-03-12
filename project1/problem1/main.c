@@ -15,14 +15,14 @@ int main(int argc, char* argv[]){
 	int numInputs = argc>=3 ? argc-1:argc;
 
 	//check if input files exits aand are readable
-	for(int i=1; i< numInputs ; i++){
-		printf("%s\n",argv[i]);
-		//open the file
-		if (access(argv[i], R_OK)){
-			perror("Reading error");
-			exit(1);
-		}
-	}
+	// for(int i=1; i< numInputs ; i++){
+	// 	printf("%s\n",argv[i]);
+	// 	//open the file
+	// 	if (access(argv[i], R_OK)){
+	// 		perror("Reading error");
+	// 		exit(1);
+	// 	}
+	// }
 
 	//get output file name
 	const char *outputFile = argc>3 ? argv[argc-1]:"myfile.out";
@@ -34,8 +34,8 @@ int main(int argc, char* argv[]){
 	for(int i =0; i < numInputs-1; i++){
 		fd[i] = open(argv[i+1], O_RDONLY);
 		if(fd[i] == -1){
-			printf("Failed to open %s", argv[i+1]);
-			exit(1);
+			printf("Failed to open %s\n", argv[i+1]);
+			exit(1);//
 		}
 	}
 

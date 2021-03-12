@@ -6,7 +6,7 @@
 #include <fcntl.h>
 #include <string.h>
 
-void oneProcess(int numlines, char* fileName,int numKeys){
+void oneProcess(int numlines, int numKeys, char* fileName){
     
     // char buf[128];
     // printf("%s",&fileName);
@@ -54,18 +54,47 @@ void oneProcess(int numlines, char* fileName,int numKeys){
 
 
 }
+void vesrionTwo(int numbers[],int L, int H){
 
-int main(int argc, char *argv[]){
+}
 
-    char *strLines = malloc(sizeof(argv[1]));
-    strLines = argv[1];
-    int lines = atoi(strLines);
-    strLines = argv[3];
 
-    //free(strLines);
-    int numKeys = atoi(strLines);
-    printf("%d\n",lines);
-    oneProcess(lines,argv[2],numKeys);
+int main(int argc, char **argv){
+    //argv[1] = L
+    //argv[2] = H
+    //argv[3] = filename
+    //argv[4] = mode 
+    if(argc != 5){
+        return(EXIT_FAILURE);
+    }
+
+    int L = atoi(argv[1]);
+    int H = atoi(argv[2]);
+    int mode = atoi(argv[4]);
+    //populate array
+    int numbers[L];
+    FILE * fp;
+    char * line = NULL;
+    size_t len = 0;
+    ssize_t read;
+    int i = 0,num;
+    fp = fopen(argv[3], "r");
+    if (fp == NULL)
+        exit(EXIT_FAILURE);
+
+    while ((read = getline(&line, &len, fp)) != -1) {
+        //printf("Retrieved line of length %zu:\n", read);
+        num = atoi(line);
+        printf("num = %d\n",num);
+        numbers[i]= num;
+        printf("num = %d\n",num);
+        i++;
+    }
+    close(fp);
+    for(i=0; i<L; i++){
+        printf("%d\n",numbers[i]);
+    }
+    //oneProcess(lines,argv[2],numKeys);
     return 0;
     //
 }

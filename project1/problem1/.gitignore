@@ -3,3 +3,7 @@
 *.o
 *.out
 *.txt
+test.c
+pipeExample.c
+reader.c
+duptest.c
