@@ -1,5 +1,23 @@
 # Problem 2
 
+## Design
+<h3>One Process</h3>
+<p>
+For one process we first initialized an array to store all the values from the files.
+While parsing through the file the max and average were calculated.
+Then we went through and found the hidden keys.
+</p>
+<h3>One Process</h3>
+<p>
+For multiple process we initialized the array of number the same as with one process. 
+We also computed the max and average while populating again. 
+Then essentially we had the parent create a child and then we had that child create a child.
+Then that granchild would have a child and so on.
+Each child was responsible for parsing through a given chuunck of the array.
+The number of total process we had was H processes. 
+So each rpocess found one key.
+</p>
+
 ## Running 
 
 ```bash
