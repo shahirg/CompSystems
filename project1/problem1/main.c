@@ -14,16 +14,6 @@ int main(int argc, char* argv[]){
 	}
 	int numInputs = argc>=3 ? argc-1:argc;
 
-	//check if input files exits aand are readable
-	// for(int i=1; i< numInputs ; i++){
-	// 	printf("%s\n",argv[i]);
-	// 	//open the file
-	// 	if (access(argv[i], R_OK)){
-	// 		perror("Reading error");
-	// 		exit(1);
-	// 	}
-	// }
-
 	//get output file name
 	const char *outputFile = argc>3 ? argv[argc-1]:"myfile.out";
 
@@ -49,7 +39,6 @@ int main(int argc, char* argv[]){
 	for(int i=0; i < numInputs-1; i++){
 		nread = 0;
 		while((nread = read(fd[i], buf, sizeof(buf)) != 0)){
-
 			printf("read: '%s'\n", buf);
 			write(fd[numInputs-1], buf, sizeof(char)*(strlen(buf)));
 		}
@@ -59,10 +48,4 @@ int main(int argc, char* argv[]){
 }
 
 
-void WriteInFile (int fd, const char *buff, int len){
-	
-}
 
-void CopyFile (int fd, const char *file_in){
-	
-}
