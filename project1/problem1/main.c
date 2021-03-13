@@ -12,7 +12,8 @@ int main(int argc, char* argv[]){
 		perror("Not enough input args");
 		exit(1);
 	}
-	int numInputs = argc>=3 ? argc-1:argc;
+	int numInputs = argc>3 ? argc-1:argc;
+	//printf("numinputs = %d\n",numInputs);
 
 	//get output file name
 	const char *outputFile = argc>3 ? argv[argc-1]:"myfile.out";
@@ -39,7 +40,7 @@ int main(int argc, char* argv[]){
 	for(int i=0; i < numInputs-1; i++){
 		nread = 0;
 		while((nread = read(fd[i], buf, sizeof(buf)) != 0)){
-			printf("read: '%s'\n", buf);
+			//printf("read: '%s'\n", buf);
 			write(fd[numInputs-1], buf, sizeof(char)*(strlen(buf)));
 		}
 		close(fd[i]);
