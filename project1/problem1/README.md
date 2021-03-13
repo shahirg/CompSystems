@@ -7,42 +7,45 @@
 ```
 
 ## Example
-file1
+### file1
 ```txt
     this is a test
 ```
 
-file2
+### file2
 ```txt
     this is the second test
 ```
-Running
+### Running
 ```bash
+    make
     ./main file1 file2 file3
 ```
 
-file3 
+### file3 
 ```txt
     this is a testing file
     this is the second test
 ```
 
 ## Example2
-file1
+
+### file1
 ```txt
     this is a test
 ```
 
-file2
+### file2
 ```txt
     this is the second test
 ```
-Running
+### Running
 ```bash
+    make
     ./main file1 file2 
 ```
 
-myfile.out
+### myfile.out
 ```txt
     this is a testing file
     this is the second test
