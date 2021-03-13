@@ -7,7 +7,7 @@ For one process we first initialized an array to store all the values from the f
 While parsing through the file the max and average were calculated.
 Then we went through and found the hidden keys.
 </p>
-<h3>One Process</h3>
+<h3>Multiple Process</h3>
 <p>
 For multiple process we initialized the array of number the same as with one process. 
 We also computed the max and average while populating again. 
