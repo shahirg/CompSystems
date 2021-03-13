@@ -11,7 +11,7 @@
     mode = 2 : use multiple process
 ```
 
-## Example
+## Example One Process
 
 ```bash
     make
@@ -38,7 +38,7 @@ output
     Hi I am process 67047 and I found a hidden key at A[74]
 ```
 
-## Example
+## Example Process Tree
 
 ```bash
     make
