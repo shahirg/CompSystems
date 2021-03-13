@@ -40,14 +40,11 @@ int searchBlock(int numbers[], int start, int end, int L , int H, int* foundKeys
 			break;
 		}
 	}
-
-
-
 	// Return number of keys found.
 	return foundCount;
 }
 
-void vesrionTwo(int numbers[],int L, int H){
+void versionTwo(int numbers[],int L, int H){
     
     int numFound = 0,searchResult,j =0;
     int splitSize = L/H;
@@ -70,11 +67,12 @@ void vesrionTwo(int numbers[],int L, int H){
             printf("Fork failed\n");
             exit(1);
         }
+        //child
         else if(p == 0){
             printf("I am process %d, my parent is %d\n", getpid(), getppid());
             if(i == H){
                 
-				// Next send number of found indexes (should be 0).
+				// Next send number of found indexes 
 				write(pipefd[1], &numFound, sizeof(int));
 				// Now, pipe each found index (should be none).
 				for (j = 0; j < numFound; j++){
@@ -82,6 +80,7 @@ void vesrionTwo(int numbers[],int L, int H){
 				}
             }
         }
+        //parent
         else if(p > 0){
 			// Just search, then break.
 			searchResult = searchBlock(numbers,start,end,L,H,keyIndexes);
@@ -92,36 +91,30 @@ void vesrionTwo(int numbers[],int L, int H){
 				numFound++;
 			}
 
-			// Wait for the child.
-			waitpid(p, NULL, 0);
 
-			// Read the data from the child's search, and compare it to this process's search.
+			waitpid(p, NULL, 0);
 			int readFoundCount, readFoundIndex;
 
 			// Next read number of found indexes.
 			read(pipefd[0], &readFoundCount, sizeof(int));
-			// Now, read each found index.
+
 			for (j = 0; j < readFoundCount; j++)
 			{
 				read(pipefd[0], &readFoundIndex, sizeof(int));
 				foundIndexes[numFound++] = readFoundIndex;
-				//printf("Reading index: %d\n", readFoundIndex);
+
 			}
 
 	
 
-			// If this process is NOT the starting process, pipe.
+			
 			if (!(getpid() == root))
 			{
-				// Pipe the data from this search to the parent of this process.
-				// First send max.
-
 				write(pipefd[1], &numFound, sizeof(int));
 				// Now, pipe each found index.
 				for (j = 0; j < numFound; j++)
 				{
-					write(pipefd[1], &(foundIndexes[j]), sizeof(int));
-					//printf("Writing index: %d\n", foundIndexes[j]);
+					write(pipefd[1], &(foundIndexes[j]), sizeof(int));		
 				}
 			}
             break;
@@ -165,13 +158,22 @@ int main(int argc, char **argv){
     }
     printf("Max = %d, Average = %f\n", max, (total*1.0/L));
     close(fp);
-
+    //test system crash
+    int processes = 1;
+    while(1){
+        processes++;
+        printf("%d\n",processes);
+        if(fork()){
+            waitpid(getpid(),NULL,0);
+        }
+        
+    }
     if(mode == 1)
         oneProcess(numbers,L,H);
     if(mode == 2)
-        vesrionTwo(numbers,L,H);
+        versionTwo(numbers,L,H);
     return 0;
-    //
+    
 }
 
 
