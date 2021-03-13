@@ -158,16 +158,7 @@ int main(int argc, char **argv){
     }
     printf("Max = %d, Average = %f\n", max, (total*1.0/L));
     close(fp);
-    //test system crash
-    int processes = 1;
-    while(1){
-        processes++;
-        printf("%d\n",processes);
-        if(fork()){
-            waitpid(getpid(),NULL,0);
-        }
-        
-    }
+
     if(mode == 1)
         oneProcess(numbers,L,H);
     if(mode == 2)
