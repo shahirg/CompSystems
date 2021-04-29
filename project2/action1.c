@@ -56,6 +56,7 @@ void thread_func4(){
 int main(int argc, char ** argv){
     pthread_t tid[4]; // 4 thread teams
     pthread_attr_t attr[4];
+    sigset_t set[4];
 
     //EACH TEAM ASSIGNED 3 SIGNALS
 
@@ -80,19 +81,56 @@ int main(int argc, char ** argv){
     signal(SIGTSTP,sig_handler4);
 
     //CREATE TEAM 1
+
+    // BLOCKS ALL SIGNALS WHICH NOT ASSIGNED TO IT
+    sigemptyset(&set[0]);
+    sigaddset(&set[0],SIGCHLD);
+    sigaddset(&set[0],SIGSEGV);
+    sigaddset(&set[0],SIGFPE);
+    sigaddset(&set[0],SIGHUP);
+    sigaddset(&set[0],SIGTSTP);
+    pthread_sigmask(SIG_BLOCK, &set[0],NULL);
     pthread_attr_init(&attr[0]);
     pthread_create(&tid[0],&attr[0],(void*) thread_func1,NULL);
-    //pthread_sigmask
+
 
     //CREATE TEAM 2
+
+    // BLOCKS ALL SIGNALS WHICH NOT ASSIGNED TO IT
+    sigemptyset(&set[1]);
+    sigaddset(&set[1],SIGINT);
+    sigaddset(&set[1],SIGSEGV);
+    sigaddset(&set[1],SIGFPE);
+    sigaddset(&set[1],SIGHUP);
+    sigaddset(&set[1],SIGTSTP);
+    pthread_sigmask(SIG_BLOCK, &set[0],NULL);
     pthread_attr_init(&attr[1]);
     pthread_create(&tid[1],&attr[1],(void*) thread_func2,NULL);
 
     //CREATE TEAM 3
+
+    // BLOCKS ALL SIGNALS WHICH NOT ASSIGNED TO IT
+    sigemptyset(&set[2]);
+    sigaddset(&set[2],SIGINT);
+    sigaddset(&set[2],SIGABRT);
+    sigaddset(&set[2],SIGILL);
+    sigaddset(&set[2],SIGCHLD);
+    sigaddset(&set[2],SIGTSTP);
+    pthread_sigmask(SIG_BLOCK, &set[2],NULL);
     pthread_attr_init(&attr[2]);
     pthread_create(&tid[2],&attr[2],(void*) thread_func3,NULL);
 
     //CREATE TEAM 4
+
+    // BLOCKS ALL SIGNALS WHICH NOT ASSIGNED TO IT
+    sigemptyset(&set[3]);
+    sigaddset(&set[3],SIGINT);
+    sigaddset(&set[3],SIGABRT);
+    sigaddset(&set[3],SIGILL);
+    sigaddset(&set[3],SIGCHLD);
+    sigaddset(&set[3],SIGSEGV);
+    pthread_sigmask(SIG_BLOCK, &set[3],NULL);
+
     pthread_attr_init(&attr[3]);
     pthread_create(&tid[3],&attr[3],(void*) thread_func4,NULL);
 
@@ -100,14 +138,14 @@ int main(int argc, char ** argv){
     // send signals to thread
     sleep(1);
     pthread_kill(tid[0],SIGINT);
-    pthread_kill(tid[0],SIGINT);
+    pthread_kill(tid[0],SIGTSTP);
     
     pthread_kill(tid[0],SIGABRT);
 
 
     pthread_kill(tid[1],SIGILL);
 
-
+    // CLOSE THREADS
     pthread_join(tid[0],NULL);
     pthread_join(tid[1],NULL);
     pthread_join(tid[2],NULL);
